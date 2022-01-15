@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<div class="min-h-full" x-data="displayData">
+<div class="min-h-full" x-data="displayData" @keyup.escape.window="modal=false">
   <div class="bg-orange-600 pb-32">
     <nav class="bg-orange-600 border-b border-orange-300 border-opacity-25 lg:border-none">
       <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
@@ -157,7 +157,7 @@ layout: default
     <header class="py-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold text-white">
-          Wellcome 
+          What kinf of punk are you?  
         </h1>
       </div>
     </header>
@@ -166,47 +166,42 @@ layout: default
   <main class="-mt-32">
     <div class="max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8">
       <div class="bg-white rounded-lg shadow px-5 py-6 sm:px-6">
-        <div class="h-96 border-4 border-dashed border-gray-200 rounded-lg">
+
       
-      <div class="bg-white">
-        <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-          <h2 class="text-2xl font-extrabold tracking-tight text-gray-900">Select one you like</h2>
+        <div class="bg-white">
+            <h2 class="text-2xl font-extrabold tracking-tight text-gray-900">Select one you like</h2>
 
-          <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
 
-            <template x-for="item in list">
-              <div class="group relative">
-                <div class="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-                  <img x-bind:src="'https://www.larvalabs.com/public/images/cryptopunks/punk'+item.id+'.png'" alt="Front of men&#039;s Basic Tee in black." class="w-full h-full object-center object-cover lg:w-full lg:h-full" style="image-rendering: pixelated;">
-                </div>
-                <div class="mt-4 flex justify-between">
-                  <div>
-                    <h3 class="text-sm text-gray-700">
-                      <a href="#">
-                        <span aria-hidden="true" class="absolute inset-0"></span>
-                        <span x-text="item.id"></span>
-                      </a>
-                    </h3>
+              <template x-for="item in list">
+                <div class="group relative">
+                  <div class="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
+                    <img x-bind:src="'https://www.larvalabs.com/public/images/cryptopunks/punk'+item.id+'.png'" 
+                    alt="Front of men&#039;s Basic Tee in black." class="w-full h-full object-center object-cover lg:w-full lg:h-full" 
+                    style="image-rendering: pixelated;">
                   </div>
-       
-                </div>
-              </div>
-            </template>
-
-            <!-- More products... -->
-          </div>
-        </div>
-      </div>
-
-
-      
+                  <div class="mt-4 flex justify-between">
+                    <div>
+                      <h3 class="text-sm text-gray-700">
+                        <button type="button" @click="modal=true;assetid=item.id">
+                          <span aria-hidden="true" class="absolute inset-0"></span>
+                        </button>
+                      </h3>
+                    </div>
         
+                  </div>
+                </div>
+              </template>
+
+            </div>
         </div>
+
       </div>
-      <!-- /End replace -->
+      {% include "modal.njk" %}
     </div>
   </main>
 </div>
+
 <script src="https://unpkg.com/realm-web/dist/bundle.iife.js"></script>
 <script defer src="https://unpkg.com/alpinejs@3.8.0/dist/cdn.min.js"></script>
 <script> 
@@ -227,7 +222,7 @@ connect()
 async function showAssets(callback) {
   const mongodb = app.currentUser.mongoClient("mongodb-atlas");
   const assets = await mongodb.db("dopio").collection("assets").aggregate(
-   [ { $sample: { size: 12 } } ]
+   [ { $sample: { size: 4 } } ]
 )
   callback (assets)
 }
@@ -237,6 +232,8 @@ displayData = function () {
     menu:false,
     settings:false,
     open:false,
+    modal:false,
+    assetid:null,
     list:[],
     async init () {
       showAssets(data=>{
