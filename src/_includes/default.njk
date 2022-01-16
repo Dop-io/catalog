@@ -32,5 +32,60 @@
 
   {{ content | safe }}
 
+  {% include "footer.njk" %}
 </body>
+<script src="https://unpkg.com/realm-web/dist/bundle.iife.js"></script>
+<script defer src="https://unpkg.com/alpinejs@3.8.0/dist/cdn.min.js"></script>
+<script> 
+const app = new Realm.App({ id: "application-0-tonmp" });
+const credentials = Realm.Credentials.anonymous();
+
+async function connect() {
+  try {
+    const user = await app.logIn(credentials);
+    console.log(user)
+  } catch(err) {
+    console.error("Failed to log in", err);
+  }
+}
+
+connect()
+
+async function getAssets(callback) {
+  const mongodb = app.currentUser.mongoClient("mongodb-atlas");
+  const assets = await mongodb.db("dopio").collection("assets").aggregate(
+   [ { $sample: { size: 48 } } ]
+)
+  callback (assets)
+}
+      
+displayData = function () {
+  return {
+    menu:false,
+    settings:false,
+    open:false,
+    modal:false,
+    assetid:null,
+    list:[],
+    arr: [],
+    tribes: [],
+    runshuffle:true,
+    async init () {
+      getAssets(data=>{
+        console.log(data)
+        this.arr= data
+        this.tribes = data.slice(0,10)
+        this.shuffle()
+        //this.init()
+
+      })
+    },
+    shuffle() {
+      this.list = this.arr.sort(() => Math.random() - 0.5).slice(0,4);
+      if (this.runshuffle) setTimeout(() => this.shuffle(), 1000);
+    }
+  }
+}
+
+</script>
 </html>

@@ -1,4 +1,23 @@
 {
   "title": "dop.io",
-  "description": "Windty is a basic template using 11ty and Tailwind, and deploys to github pages."
+  "description": "DNF Derivatives Platform",
+  "navigation": [
+    {
+      "title": "Make it dop",
+      "url": "/make"
+    },
+
+    {
+      "title": "Catalog",
+      "url": "/catalog"
+    },
+    {
+      "title": "Leaderboard",
+      "url": "/leaderboard"
+    },
+    {
+      "title": "Marketplace",
+      "url": "/marketplace"
+    }
+  ]
 }
