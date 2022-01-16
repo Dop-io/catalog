@@ -563,7 +563,7 @@ layout: base
 
 
           <template x-for="item in assets">         
-          <a href="#" class="group">
+          <button @click="modal=true;assetid=item.token_id;runshuffle=false" class="group">
             <div class="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
               <img x-bind:src="item.image_original_url" alt="Olive drab green insulated bottle with flared screw lid and flat top." class="w-full h-full object-center object-cover group-hover:opacity-75">
             </div>
@@ -573,14 +573,14 @@ layout: base
             <p class="mt-1 text-lg font-medium text-gray-900" x-text="item.top_bid">
               
             </p>
-          </a>
+          </button>
           </template>
 
 
         </div>
       </section>
     </main>
-
+    {% include "modal.njk" %}
     
   </div>
 </div>
