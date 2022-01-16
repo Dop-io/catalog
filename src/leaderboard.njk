@@ -1,7 +1,58 @@
 ---
 layout: base
 ---
-<div class="my-16 mx-auto max-w-7xl px-4 sm:mt-24 sm:px-6">
+
+
+<div class="bg-gray-50" x-data="filters">
+
+
+  <div>
+    <!--
+      Mobile filter dialog
+
+      Off-canvas filters for mobile, show/hide based on off-canvas filters state.
+    -->
+    <div  x-show="filter" class="fixed inset-0 flex z-40 sm:hidden" role="dialog" aria-modal="true">
+      <!--
+        Off-canvas menu overlay, show/hide based on off-canvas menu state.
+
+        Entering: "transition-opacity ease-linear duration-300"
+          From: "opacity-0"
+          To: "opacity-100"
+        Leaving: "transition-opacity ease-linear duration-300"
+          From: "opacity-100"
+          To: "opacity-0"
+      -->
+      <div class="fixed inset-0 bg-black bg-opacity-25" aria-hidden="true"></div>
+
+      <!--
+        Off-canvas menu, show/hide based on off-canvas menu state.
+
+        Entering: "transition ease-in-out duration-300 transform"
+          From: "translate-x-full"
+          To: "translate-x-0"
+        Leaving: "transition ease-in-out duration-300 transform"
+          From: "translate-x-0"
+          To: "translate-x-full"
+      -->
+      <div class="ml-auto relative max-w-xs w-full h-full bg-white shadow-xl py-4 pb-12 flex flex-col overflow-y-auto">
+        <div class="px-4 flex items-center justify-between">
+          <h2 class="text-lg font-medium text-gray-900">Filters</h2>
+          <button  @click="filter=!filter" type="button" class="-mr-2 w-10 h-10 bg-white p-2 rounded-md flex items-center justify-center text-gray-400">
+            <span class="sr-only">Close menu</span>
+            <!-- Heroicon name: outline/x -->
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <main>
+
+<div class="my-16 mx-auto max-w-7xl px-4 sm:mt-24 sm:px-6" >
 <div class="text-center">
     <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
     <span class="block">The Game Of Tribes</span>
@@ -12,42 +63,40 @@ layout: base
 </div>
 </div>
 
-<!-- This example requires Tailwind CSS v2.0+ -->
-<div class="bg-white shadow overflow-hidden sm:rounded-md">
-  <ul role="list" class="divide-y divide-gray-200">
 
-  <tempalte x-for="item in tribes">
 
+      <!-- Product grid -->
+      <section aria-labelledby="products-heading" class="max-w-2xl mx-auto pt-12 pb-16 px-4 sm:pt-16 sm:pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
+
+        <ul role="list" class="divide-y divide-gray-200 bg-white  rounded-lg shadow">
+
+
+
+          <template x-for="item in assets">         
     <li>
       <a href="#" class="block hover:bg-gray-50">
         <div class="flex items-center px-4 py-4 sm:px-6">
           <div class="min-w-0 flex-1 flex items-center">
             <div class="flex-shrink-0">
-              <img class="h-12 w-12 rounded-full" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+              <img class="h-12 w-12 rounded-full" x-bind:src="item.image_thumbnail_url" alt="">
             </div>
             <div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
               <div>
-                <p class="text-sm font-medium text-indigo-600 truncate">Kristen Ramos</p>
+                <p class="text-sm font-medium text-indigo-600 truncate" x-text="item.name"></p>
                 <p class="mt-2 flex items-center text-sm text-gray-500">
-                  <!-- Heroicon name: solid/mail -->
-                  <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                  </svg>
-                  <span class="truncate">kristen.ramos@example.com</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                </svg>
+                  <span class="truncate" x-text="item.size"></span>
                 </p>
               </div>
 
             </div>
             <div class="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
               <div class="flex overflow-hidden -space-x-1">
-                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Dries Vincent">
-
-                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Lindsay Walton">
-
-                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Courtney Henry">
-
-                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Tom Cook">
+              <template x-for="dop in item.latest">
+                <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" x-bind:src="dop.image_thumbnail_url" alt="Dries Vincent">
+                </template>
               </div>
             </div>
           </div>
@@ -60,15 +109,45 @@ layout: base
         </div>
       </a>
     </li>
-    </tempalte>
+          </template>
+
+
+        </ul>
+      </section>
+    </main>
+
     
-  </ul>
+  </div>
 </div>
 
 <script>
-function leaderboarData() {
+function filters (){
     return {
-        list = [];
+        filter:false,
+        sort:false,
+        category:false,
+        type:false,
+        sizes: false,
+        color:false,
+        assets: [],
+        offset: Math.floor(Math.random() * 9999) ,
+        limit: 48,
+        async init(){
+          await fetch(`https://api.opensea.io/api/v1/assets?order_direction=desc&offset=${this.offset}&limit=${this.limit}&collection=cryptopunks`)
+          .then(res => res.json())
+          .then(data => {
+            console.log(data)
+            this.assets = data.assets.map(el=>{
+                el.size = Math.floor(Math.random() * 1000) ,
+                el.name = el.name + ' Tribe' 
+                el.latest = data.assets.slice(0,2+Math.floor(Math.random() * 3) )
+                return el
+            }).sort((a,b)=>{
+                return b.size - a.size
+            });
+
+          });
+        }
     }
 }
 </script>
